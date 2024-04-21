@@ -1,4 +1,4 @@
-import "./index.css";
+import "./Sidebar.css";
 
 const Sidebar = () => {
   return <div className="alo">
