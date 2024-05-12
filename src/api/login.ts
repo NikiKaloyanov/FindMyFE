@@ -1,5 +1,17 @@
-export const login = (username: string, password: string): Promise<string> => {
-  return new Promise<string>((resolve, reject) => {
+type Response = {
+  accessToken: string;
+  email: string;
+  id: number;
+  roles: string[];
+  tokenType: string;
+  username: string;
+};
+
+export const login = (
+  username: string,
+  password: string,
+): Promise<Response> => {
+  return new Promise<Response>((resolve, reject) => {
     fetch(
       `${import.meta.env.VITE_API_BASE_URL}${import.meta.env.VITE_API_BASE_PORT}/api/auth/signin`,
       {
@@ -13,7 +25,12 @@ export const login = (username: string, password: string): Promise<string> => {
         }),
       },
     )
-      .then((res) => resolve(res.json()))
+      .then((res) => {
+        if (res.ok) {
+          return resolve(res.json());
+        }
+        throw new Error("Unable to login");
+      })
       .catch((err) => reject(err));
   });
 };

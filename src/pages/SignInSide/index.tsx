@@ -1,4 +1,3 @@
-import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,21 +11,36 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { login } from "../../api/login.ts";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { register } from "../../api/register.ts";
 
 const SignInSide = () => {
-  const [error, setError] = useState<string | null>(null),
+  const navigate = useNavigate(),
+    [error, setError] = useState<string | null>(null),
     [signUp, setSignUp] = useState<boolean>(false);
 
   const switchToSignUp = () => {
     setSignUp(!signUp);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const name = data.get("name");
     const email = data.get("email");
     const password = data.get("password");
+    if (signUp) {
+      registerRequest(name, email, password);
+    } else {
+      loginRequest(email, password);
+    }
+  };
+
+  const loginRequest = (
+    email: FormDataEntryValue | null,
+    password: FormDataEntryValue | null,
+  ) => {
     if (
       email === null ||
       password === null ||
@@ -37,7 +51,31 @@ const SignInSide = () => {
       throw new Error("Email and password is required");
     }
     setError(null);
-    login(email as string, password as string);
+    login(email as string, password as string)
+      .then(() => navigate("/app"))
+      .catch(() => setError("Wrong email or password"));
+  };
+
+  const registerRequest = (
+    name: FormDataEntryValue | null,
+    email: FormDataEntryValue | null,
+    password: FormDataEntryValue | null,
+  ) => {
+    if (
+      name === null ||
+      email === null ||
+      password === null ||
+      name === "" ||
+      email === "" ||
+      password === ""
+    ) {
+      setError("Name, email and password is required");
+      throw new Error("Name, email and password is required");
+    }
+    setError(null);
+    register(name as string, email as string, password as string)
+      .then(() => navigate("/app"))
+      .catch((err) => setError(err));
   };
 
   return (
@@ -81,6 +119,18 @@ const SignInSide = () => {
             onSubmit={handleSubmit}
             sx={{ mt: 1 }}
           >
+            {signUp && (
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="name"
+                label="Name"
+                name="name"
+                autoComplete="name"
+                autoFocus
+              />
+            )}
             <TextField
               margin="normal"
               required
