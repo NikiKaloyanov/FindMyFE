@@ -14,22 +14,24 @@ import { login } from "../../api/login.ts";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../api/register.ts";
+import { useHooksContext } from "../../hooks/useHooksContext.tsx";
 
 const SignInSide = () => {
   const navigate = useNavigate(),
+    { headersHook } = useHooksContext(),
     [error, setError] = useState<string | null>(null),
     [signUp, setSignUp] = useState<boolean>(false);
 
-  const switchToSignUp = () => {
+  const switchSignUp = () => {
     setSignUp(!signUp);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const name = data.get("name");
-    const email = data.get("email");
-    const password = data.get("password");
+    const name = data.get("name") as string;
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
     if (signUp) {
       registerRequest(name, email, password);
     } else {
@@ -52,15 +54,20 @@ const SignInSide = () => {
     }
     setError(null);
     login(email as string, password as string)
-      .then(() => navigate("/app"))
+      .then((data) => {
+        headersHook.setUserData(data)
+        navigate("/app");
+      })
       .catch(() => setError("Wrong email or password"));
   };
 
   const registerRequest = (
-    name: FormDataEntryValue | null,
-    email: FormDataEntryValue | null,
-    password: FormDataEntryValue | null,
+    name: string | null,
+    email: string | null,
+    password: string | null,
   ) => {
+    setError(null);
+
     if (
       name === null ||
       email === null ||
@@ -72,41 +79,60 @@ const SignInSide = () => {
       setError("Name, email and password is required");
       throw new Error("Name, email and password is required");
     }
+
+    if (password.length < 6) {
+      setError("Password should be at least 6 symbols");
+      throw new Error("Password should be at least 6 symbols");
+    }
+
+    if (!(email.includes("@") && email.includes("."))) {
+      setError("Password should be at least 6 symbols");
+      throw new Error("Password should be at least 6 symbols");
+    }
+
     setError(null);
-    register(name as string, email as string, password as string)
-      .then(() => navigate("/app"))
+    register(name, email, password)
+      .then(() => switchSignUp())
       .catch((err) => setError(err));
   };
 
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
+    <Grid
+      container
+      component="main"
+      sx={{
+        height: "100vh",
+        backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: (t) =>
+          t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <CssBaseline />
       <Grid
         item
-        xs={false}
-        sm={4}
-        md={7}
+        xs={12}
+        sm={8}
+        md={5}
+        component={Paper}
+        elevation={6}
+        square
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
-          backgroundRepeat: "no-repeat",
-          backgroundColor: (t) =>
-            t.palette.mode === "light"
-              ? t.palette.grey[50]
-              : t.palette.grey[900],
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          my: 8,
+          mx: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "18px",
+          backdropFilter: "blur(5px) saturate(150%)",
+          webkitBackdropFilter: "blur(5px) saturate(150%)",
+          backgroundColor: "rgba(238, 238, 238, 0.8)",
+          borderRadius: "8px",
         }}
-      />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <Box
-          sx={{
-            my: 8,
-            mx: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+      >
+        <Box>
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -176,7 +202,7 @@ const SignInSide = () => {
                 </Grid>
 
                 <Grid item xs>
-                  <Button fullWidth variant="text" onClick={switchToSignUp}>
+                  <Button fullWidth variant="text" onClick={switchSignUp}>
                     {"Sign Up"}
                   </Button>
                 </Grid>

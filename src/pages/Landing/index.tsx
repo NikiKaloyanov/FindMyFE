@@ -3,6 +3,8 @@ import { Grid } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AdvancedMarker, APIProvider, Map } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
+import { updateLocation } from "../../api/updateLocation.ts";
+import { useHooksContext } from "../../hooks/useHooksContext.tsx";
 
 type Coordinates = {
   lat: number;
@@ -10,7 +12,8 @@ type Coordinates = {
 };
 
 const Landing = () => {
-  const [zoom, setZoom] = useState<number>(10),
+  const { headersHook } = useHooksContext(),
+    [zoom, setZoom] = useState<number>(10),
     [position, setPosition] = useState<Coordinates>({
       lat: 42.642632,
       lng: 23.338406,
@@ -21,7 +24,11 @@ const Landing = () => {
       navigator.geolocation.getCurrentPosition((data) => {
         setPosition({ lat: data.coords.latitude, lng: data.coords.longitude });
       });
-      console.log("check");
+      updateLocation(
+        headersHook.userData.username,
+        position.lng.toString(),
+        position.lat.toString(),
+      );
     }, 5000);
 
     return () => clearInterval(interval);
@@ -43,7 +50,7 @@ const Landing = () => {
             disableDefaultUI={true}
             defaultCenter={position}
           >
-            <AdvancedMarker position={position} title={"N"}/>
+            <AdvancedMarker position={position} title={"N"} />
           </Map>
         </APIProvider>
       </Grid>

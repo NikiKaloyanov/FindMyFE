@@ -3,11 +3,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import SignInSide from "./pages/SignInSide";
 import Landing from "./pages/Landing";
+import { RoomsHookContext } from "./hooks/useHooksContext.tsx";
 
 const defaultTheme = createTheme();
 
 function App() {
-  return (
+  const content = (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
         <Routes>
@@ -17,6 +18,8 @@ function App() {
       </BrowserRouter>
     </ThemeProvider>
   );
+
+  return <RoomsHookContext children={content} />;
 }
 
 export default App;

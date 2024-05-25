@@ -1,11 +1,4 @@
-type Response = {
-  accessToken: string;
-  email: string;
-  id: number;
-  roles: string[];
-  tokenType: string;
-  username: string;
-};
+import { Response } from "../hooks/useHeaders.ts";
 
 export const login = (
   username: string,
