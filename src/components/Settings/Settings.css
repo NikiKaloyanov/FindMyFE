@@ -1,0 +1,49 @@
+.settings-wrapper {
+  position: absolute;
+  bottom: -98vh;
+  /*margin: 22px;*/
+  padding: 18px;
+  width: 100%;
+  height: 96vh;
+  word-break: break-word;
+  backdrop-filter: blur(5px) saturate(150%);
+  -webkit-backdrop-filter: blur(5px) saturate(150%);
+  background-color: rgba(238, 238, 238, 0.8);
+  border-radius: 8px;
+  z-index: 1;
+  animation: come-up 0.2s;
+}
+
+@keyframes come-up {
+  0% {
+    bottom: -150vh;
+  }
+  100% {
+    bottom: -98vh;
+  }
+}
+
+.close-down {
+  animation-name: come-down;
+  animation-duration: 0.15s;
+}
+
+@keyframes come-down {
+  0% {
+    bottom: -98vh;
+  }
+  100% {
+    bottom: -160vh;
+    opacity: 0.9;
+  }
+}
+
+.title-button {
+  padding-left: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.close-button {
+  color: black;
+}

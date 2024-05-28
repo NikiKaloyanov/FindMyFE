@@ -3,29 +3,31 @@
   min-height: 100vh;
 }
 
-.sidebar {
-  position: absolute;
-  bottom: 0;
-  margin: 22px;
-  padding: 18px;
-  backdrop-filter: blur(5px) saturate(150%);
-  -webkit-backdrop-filter: blur(5px) saturate(150%);
-  background-color: rgba(238, 238, 238, 0.5);
-  border-radius: 8px;
-  z-index: 1;
+.responsive-control {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.sidebar:hover {
-  animation-name: card-focus;
-  animation-duration: 300ms;
-  background-color: rgba(238, 238, 238, 1);
+.button-style {
+  width: 100%;
+  height: 3rem;
 }
 
-@keyframes card-focus {
-  0% {
-    background-color: rgba(238, 238, 238, 0.5);
-  }
-  100% {
-    background-color: rgba(238, 238, 238, 1);
-  }
+.control-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+}
+
+.exit-button{
+  width: 40%;
+}
+
+.settings-button {
+  width: 15%;
+}
+
+.settings{
+  color: black;
 }

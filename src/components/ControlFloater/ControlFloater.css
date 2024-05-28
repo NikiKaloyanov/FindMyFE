@@ -1,0 +1,70 @@
+.floater {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: -70vh;
+  /*margin: 22px;*/
+  padding: 18px;
+  width: 100%;
+  /*height: 100%;*/
+  backdrop-filter: blur(5px) saturate(150%);
+  -webkit-backdrop-filter: blur(5px) saturate(150%);
+  background-color: rgba(238, 238, 238, 0.5);
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.floater-body {
+  position: absolute;
+  bottom: -100vh;
+  /*margin: 22px;*/
+  padding: 18px;
+  width: 100%;
+  height: 28vh;
+  word-break: break-word;
+  backdrop-filter: blur(5px) saturate(150%);
+  -webkit-backdrop-filter: blur(5px) saturate(150%);
+  background-color: rgba(238, 238, 238, 0.5);
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.floater-body:hover {
+  animation-name: card-focus;
+  animation-duration: 300ms;
+  background-color: rgba(238, 238, 238, 1);
+}
+
+@keyframes card-focus {
+  0% {
+    background-color: rgba(238, 238, 238, 0.5);
+  }
+  100% {
+    background-color: rgba(238, 238, 238, 1);
+  }
+}
+
+.floater-close {
+  animation: close 0.3s;
+}
+
+@keyframes close {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.text {
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.control-body {
+}

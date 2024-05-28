@@ -1,10 +1,15 @@
 import "./Landing.css";
-import { Grid } from "@mui/material";
+import { Grid, Slider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AdvancedMarker, APIProvider, Map } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import { updateLocation } from "../../api/updateLocation.ts";
 import { useHooksContext } from "../../hooks/useHooksContext.tsx";
+import ControlFloater from "../../components/ControlFloater";
+import Button from "@mui/material/Button";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { useNavigate } from "react-router-dom";
+import Settings from "../../components/Settings";
 
 type Coordinates = {
   lat: number;
@@ -17,7 +22,50 @@ const Landing = () => {
     [position, setPosition] = useState<Coordinates>({
       lat: 42.642632,
       lng: 23.338406,
-    });
+    }),
+    [updateFrequency, setUpdateFrequency] = useState<number>(5000),
+    [openSettings, setOpenSettings] = useState<boolean>(false);
+
+  const handleUpdateFrequency = (
+    event: Event,
+    value: number | number[],
+    activeThumb: number,
+  ) => {
+    setUpdateFrequency(value as number);
+  };
+
+  const handleSettingsButton = () => {
+    setOpenSettings(!openSettings);
+  };
+
+  const controlContent = (
+    <>
+      <div>
+        Update Frequency
+        <Slider
+          color="success"
+          value={updateFrequency}
+          onChange={handleUpdateFrequency}
+        />
+      </div>
+      <Button variant="outlined" color="success" className="button-style">
+        Add people
+      </Button>
+      <div className="control-wrapper">
+        <Button variant="contained" color="error" className="exit-button">
+          Logout
+        </Button>
+        <Button
+          variant="text"
+          color="success"
+          className="settings-button"
+          onClick={handleSettingsButton}
+        >
+          <SettingsIcon className="settings" />
+        </Button>
+      </div>
+    </>
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,7 +77,7 @@ const Landing = () => {
         position.lng.toString(),
         position.lat.toString(),
       );
-    }, 5000);
+    }, updateFrequency);
 
     return () => clearInterval(interval);
   }, []);
@@ -37,9 +85,25 @@ const Landing = () => {
   return (
     <Grid container className="map">
       <CssBaseline />
-      <Grid item xs={2}>
-        <div className="sidebar">floater</div>
+
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={3}
+        sx={{ mx: 2 }}
+        className="responsive-control"
+      >
+        {!openSettings ? (
+          <ControlFloater
+            text={"Welcome " + headersHook.userData.username + "!"}
+            children={controlContent}
+          />
+        ) : (
+          <Settings handleClose={handleSettingsButton}/>
+        )}
       </Grid>
+
       <Grid item xs={12} className="map">
         <APIProvider apiKey={import.meta.env.VITE_API_GOOGLE_MAPS_KEY}>
           <Map
