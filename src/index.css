@@ -15,6 +15,7 @@ div {
 body {
   font-family: Poppins-Light, serif;
   margin: 0;
+  overflow: hidden;
 }
 
 h3 {
