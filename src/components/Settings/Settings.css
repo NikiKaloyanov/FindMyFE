@@ -35,15 +35,26 @@
   100% {
     bottom: -160vh;
     opacity: 0.9;
+    background-color: rgba(238, 238, 238, 0.5);
   }
 }
 
 .title-button {
-  padding-left: 12px;
   display: flex;
   justify-content: space-between;
 }
 
 .close-button {
   color: black;
+}
+
+.settings-button {
+  width: 15%;
+}
+
+.pending-list {
+}
+
+.pending-padding {
+  padding: 8px 0;
 }

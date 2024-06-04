@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext } from "react";
 import { TenantsHook, useHeaders } from "./useHeaders.ts";
+import { UserDataHook, useUserData } from "./useUserData.ts";
 
 interface ThemeContextProps {
   children: ReactNode;
@@ -8,6 +9,7 @@ interface ThemeContextProps {
 type Hooks =
   | {
       headersHook: TenantsHook;
+      userDataHook: UserDataHook;
     }
   | undefined;
 
@@ -15,12 +17,14 @@ export const RoomsContext = createContext<Hooks>(undefined);
 
 export const RoomsHookContext: React.FC<ThemeContextProps> = ({ children }) => {
   const headersHook = useHeaders();
+  const userDataHook = useUserData();
 
   return (
     <div>
       <RoomsContext.Provider
         value={{
           headersHook: headersHook,
+          userDataHook: userDataHook,
         }}
       >
         {children}

@@ -12,6 +12,10 @@ import Settings from "../../components/Settings";
 import MarkerImage from "../../components/MarkerImage";
 import FormDialog from "../../components/FormDialog";
 import { locationRequest } from "../../api/locationRequest.ts";
+import { getPendingLocations } from "../../api/getPendingLocations.ts";
+import { useNavigate } from "react-router-dom";
+import { getKnownLocations } from "../../api/getKnownLocations.ts";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 type Coordinates = {
   lat: number;
@@ -19,7 +23,8 @@ type Coordinates = {
 };
 
 const Landing = () => {
-  const { headersHook } = useHooksContext(),
+  const { headersHook, userDataHook } = useHooksContext(),
+    navigate = useNavigate(),
     [zoom, setZoom] = useState<number>(10),
     [position, setPosition] = useState<Coordinates>({
       lat: 42.697732,
@@ -28,6 +33,11 @@ const Landing = () => {
     [updateFrequency, setUpdateFrequency] = useState<number>(5000),
     [openSettings, setOpenSettings] = useState<boolean>(false),
     [openAdd, setOpenAdd] = useState<boolean>(false);
+
+  const handleLogout = () => {
+    headersHook.cleanData();
+    navigate("/");
+  };
 
   const handleUpdateFrequency = (
     event: Event,
@@ -69,11 +79,16 @@ const Landing = () => {
         Add people
       </Button>
       <div className="control-wrapper">
-        <Button variant="contained" color="error" className="exit-button">
-          Logout
+        <Button
+          variant="contained"
+          color="error"
+          className="exit-button"
+          onClick={handleLogout}
+        >
+          <LogoutIcon />
         </Button>
         <Button
-          variant="text"
+          variant="outlined"
           color="success"
           className="settings-button"
           onClick={handleSettingsButton}
@@ -94,6 +109,12 @@ const Landing = () => {
   }, []);
 
   useEffect(() => {
+    getPendingLocations(headersHook.userData.username).then((data) =>
+      userDataHook.setPendingLocations(data.map((it) => it.username)),
+    );
+    getKnownLocations(headersHook.userData.username).then((data) => {
+      userDataHook.setKnownLocations(data);
+    });
     updateLocation(
       headersHook.userData.username,
       position.lng.toString(),
@@ -136,8 +157,25 @@ const Landing = () => {
             >
               <AdvancedMarker
                 position={position}
-                children={<MarkerImage initials="NK" />}
+                children={
+                  <MarkerImage
+                    initials={userDataHook.getInitials(
+                      headersHook.userData.username,
+                    )}
+                  />
+                }
               />
+              {userDataHook.knownLocations.map((it) => (
+                <AdvancedMarker
+                  key={it.username}
+                  position={{ lat: it.latitude, lng: it.longitude }}
+                  children={
+                    <MarkerImage
+                      initials={userDataHook.getInitials(it.username)}
+                    />
+                  }
+                />
+              ))}
             </Map>
           </APIProvider>
         </Grid>

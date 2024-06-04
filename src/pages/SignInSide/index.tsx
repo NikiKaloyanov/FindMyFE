@@ -29,13 +29,13 @@ const SignInSide = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const name = data.get("name") as string;
+    const name = data.get("username") as string;
     const email = data.get("email") as string;
     const password = data.get("password") as string;
     if (signUp) {
       registerRequest(name, email, password);
     } else {
-      loginRequest(email, password);
+      loginRequest(name, password);
     }
   };
 
@@ -55,7 +55,7 @@ const SignInSide = () => {
     setError(null);
     login(email as string, password as string)
       .then((data) => {
-        headersHook.setUserData(data)
+        headersHook.setUserData(data);
         navigate("/app");
       })
       .catch(() => setError("Wrong email or password"));
@@ -150,10 +150,10 @@ const SignInSide = () => {
                 margin="normal"
                 required
                 fullWidth
-                id="name"
-                label="Name"
-                name="name"
-                autoComplete="name"
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
                 autoFocus
               />
             )}
@@ -161,10 +161,10 @@ const SignInSide = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -177,12 +177,6 @@ const SignInSide = () => {
               id="password"
               autoComplete="current-password"
             />
-            {!signUp && (
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-            )}
             <Button
               type="submit"
               fullWidth
@@ -194,15 +188,7 @@ const SignInSide = () => {
             {!signUp ? (
               <Grid container>
                 <Grid item xs>
-                  <Button fullWidth variant="text">
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Button>
-                </Grid>
-
-                <Grid item xs>
-                  <Button fullWidth variant="text" onClick={switchSignUp}>
+                  <Button fullWidth variant="outlined" onClick={switchSignUp}>
                     {"Sign Up"}
                   </Button>
                 </Grid>

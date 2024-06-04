@@ -12,6 +12,7 @@ export type Response = {
 export type TenantsHook = {
   userData: Response;
   setUserData: (userData: Response) => void;
+  cleanData: () => void;
 };
 
 export const useHeaders = (): TenantsHook => {
@@ -33,8 +34,25 @@ export const useHeaders = (): TenantsHook => {
     setUserData(data);
   };
 
+  const cleanData = () => {
+    localStorage.setItem("id", "0");
+    localStorage.setItem("accessToken", "");
+    localStorage.setItem("email", "");
+    localStorage.setItem("username", "");
+
+    setUserData({
+      id: 0,
+      accessToken: "",
+      email: "",
+      roles: [],
+      username: "",
+      tokenType: "",
+    });
+  };
+
   return {
     userData,
     setUserData: setDataInLocalStorage,
+    cleanData,
   };
 };
