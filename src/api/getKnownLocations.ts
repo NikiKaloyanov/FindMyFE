@@ -1,4 +1,4 @@
-import {UserLocation} from "../hooks/useUserData.ts";
+import { UserLocation } from "../hooks/useUserData.ts";
 
 export const getKnownLocations = (
   usernameCaller: string,

@@ -18,8 +18,16 @@ const FormDialog = (props: Props) => {
       <Dialog
         open={props.open}
         onClose={() => props.handleCloseDialog()}
+        sx={{
+          backdropFilter: "blur(5px) saturate(150%)",
+          webkitBackdropFilter: "blur(5px) saturate(150%)",
+        }}
         PaperProps={{
           component: "form",
+          sx: {
+            backgroundColor: "rgba(253,253,253,0.93)",
+            borderRadius: "12px",
+          },
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
@@ -32,7 +40,8 @@ const FormDialog = (props: Props) => {
         <DialogTitle>Add Shared Location</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To send a request to add a shared location to your map, enter the email of the account.
+            To send a request to add a shared location to your map, enter the
+            email of the account.
           </DialogContentText>
           <TextField
             autoFocus
@@ -47,8 +56,12 @@ const FormDialog = (props: Props) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => props.handleCloseDialog()}>Cancel</Button>
-          <Button type="submit">Request</Button>
+          <Button color="error" variant="outlined" onClick={() => props.handleCloseDialog()}>
+            Cancel
+          </Button>
+          <Button color="success" type="submit" variant="contained">
+            Request
+          </Button>
         </DialogActions>
       </Dialog>
     </>

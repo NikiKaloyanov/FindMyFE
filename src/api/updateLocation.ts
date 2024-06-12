@@ -12,7 +12,7 @@ export const updateLocation = (
         method: "POST",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          "Authorization": token ? "Bearer " + token : "",
+          Authorization: token ? "Bearer " + token : "",
         },
         body: JSON.stringify({
           username: username,
