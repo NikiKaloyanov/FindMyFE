@@ -16,7 +16,7 @@ import { useHooksContext } from "../../hooks/useHooksContext.tsx";
 const SignInSide = () => {
   const navigate = useNavigate(),
     imageGenerator: string =
-      "url(https://picsum.photos/" + screen.width + "/" + screen.height + ")",
+      "url(/sign.jpg)",
     { headersHook } = useHooksContext(),
     [error, setError] = useState<string | null>(null),
     [signUp, setSignUp] = useState<boolean>(false);
