@@ -40,9 +40,8 @@ const Landing = () => {
   };
 
   const handleUpdateFrequency = (
-    event: Event,
+    _event: Event,
     value: number | number[],
-    activeThumb: number,
   ) => {
     setUpdateFrequency(value as number);
   };
