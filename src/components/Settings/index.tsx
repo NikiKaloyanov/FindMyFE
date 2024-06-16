@@ -62,11 +62,13 @@ const Settings = (props: Props) => {
         {userDataHook.knownLocations.length > 0 ? (
           <>
             <b>Added People</b>
-            <div className="people-list">
-              <div className="added-person">
-                {userDataHook.knownLocations.map((it) => it.username)}
-              </div>
-            </div>
+            {userDataHook.knownLocations.map((it) => (
+              <>
+                <div className="people-list">
+                  <div className="added-person">{it.username}</div>
+                </div>
+              </>
+            ))}
           </>
         ) : (
           <div>No Added People</div>
@@ -78,7 +80,11 @@ const Settings = (props: Props) => {
             value={props.updateFrequency}
             onChange={props.handleUpdateFrequency}
           />
-          <div>{props.updateFrequency * 50}</div>
+          <div>
+            {props.updateFrequency * 50 > 6000
+              ? 5000
+              : props.updateFrequency * 50}
+          </div>
         </div>
       </Box>
     </div>

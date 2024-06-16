@@ -16,8 +16,7 @@ const PendingSection = (props: Props) => {
       headersHook.userData.username,
       props.username,
       true,
-    );
-    userDataHook.removeFromPending(props.username)
+    ).catch(() => userDataHook.removeFromPending(props.username));
   };
 
   const handleReject = () => {
@@ -25,8 +24,7 @@ const PendingSection = (props: Props) => {
       headersHook.userData.username,
       props.username,
       false,
-    );
-    userDataHook.removeFromPending(props.username)
+    ).catch(() => userDataHook.removeFromPending(props.username));
   };
 
   return (
