@@ -1,5 +1,5 @@
 import "./ControlFloater.css";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 
 type Props = {
@@ -16,11 +16,19 @@ const ControlFloater = (props: Props) => {
     setTimeout(() => setHideWelcome(true), 300);
   };
 
+  useEffect(() => {
+    setTimeout(() => handleClose(), 5000);
+  }, []);
+
   return (
     <div>
       <div
         className={
-          hideWelcome ? "hide" : closeAnimation ? "floater floater-close" : "floater"
+          hideWelcome
+            ? "hide"
+            : closeAnimation
+              ? "floater floater-close"
+              : "floater"
         }
         onClick={handleClose}
       >

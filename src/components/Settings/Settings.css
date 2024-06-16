@@ -53,8 +53,25 @@
 }
 
 .pending-list {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
 .pending-padding {
   padding: 8px 0;
+}
+
+.people-list {
+  margin-top: 2rem;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #e5e5e5;
+}
+
+.added-person {
+  padding-top: 4px;
+}
+
+.slider {
+  margin-top: 2rem;
 }

@@ -5,9 +5,16 @@ import { useState } from "react";
 import { useHooksContext } from "../../hooks/useHooksContext.tsx";
 import PendingSection from "../PendingSection";
 import Box from "@mui/material/Box";
+import { Slider } from "@mui/material";
 
 type Props = {
   handleClose: () => void;
+  updateFrequency: number;
+  handleUpdateFrequency: (
+    event: Event,
+    value: number | number[],
+    activeThumb: number,
+  ) => void;
 };
 
 const Settings = (props: Props) => {
@@ -38,16 +45,41 @@ const Settings = (props: Props) => {
             <CloseIcon fontSize="large" className="close-button" />
           </Button>
         </div>
-        {userDataHook.pendingLocations.length > 0 && (
-          <div className="pending-list">
-            <div>Location Requests</div>
-            {userDataHook.pendingLocations.map((it) => (
-              <div className="pending-padding">
-                <PendingSection username={it} />
+        <div className="pending-list">
+          {userDataHook.pendingLocations.length > 0 ? (
+            <>
+              <b>Location Requests</b>
+              {userDataHook.pendingLocations.map((it) => (
+                <div className="pending-padding">
+                  <PendingSection username={it} />
+                </div>
+              ))}
+            </>
+          ) : (
+            <b>No New Location Requests</b>
+          )}
+        </div>
+        {userDataHook.knownLocations.length > 0 ? (
+          <>
+            <b>Added People</b>
+            <div className="people-list">
+              <div className="added-person">
+                {userDataHook.knownLocations.map((it) => it.username)}
               </div>
-            ))}
-          </div>
+            </div>
+          </>
+        ) : (
+          <div>No Added People</div>
         )}
+        <div className="slider">
+          <b>Update Frequency</b>
+          <Slider
+            color="success"
+            value={props.updateFrequency}
+            onChange={props.handleUpdateFrequency}
+          />
+          <div>{props.updateFrequency * 50}</div>
+        </div>
       </Box>
     </div>
   );

@@ -15,6 +15,8 @@ import { useHooksContext } from "../../hooks/useHooksContext.tsx";
 
 const SignInSide = () => {
   const navigate = useNavigate(),
+    imageGenerator: string =
+      "url(https://picsum.photos/" + screen.width + "/" + screen.height + ")",
     { headersHook } = useHooksContext(),
     [error, setError] = useState<string | null>(null),
     [signUp, setSignUp] = useState<boolean>(false);
@@ -55,7 +57,9 @@ const SignInSide = () => {
         headersHook.setUserData(data);
         navigate("/app");
       })
-      .catch(() => setError("Wrong email or password"));
+      .catch(() => {
+        setError("Wrong email or password");
+      });
   };
 
   const registerRequest = (
@@ -99,10 +103,9 @@ const SignInSide = () => {
       component="main"
       sx={{
         height: "100vh",
-        backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
+        backgroundImage: imageGenerator,
         backgroundRepeat: "no-repeat",
-        backgroundColor: (t) =>
-          t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],
+        backgroundColor: "rgba(49,52,46,0.5)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -130,12 +133,25 @@ const SignInSide = () => {
         }}
       >
         <Box>
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+            }}
+          >
+            <Box sx={{ alignItems: "center", justifyContent: "center" }}>
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+            </Box>
+            <Typography component="h1" variant="h3">
+              MeetMap
+            </Typography>
+          </Box>
           <Box
             component="form"
             aria-errormessage={error ? error : undefined}
@@ -163,6 +179,7 @@ const SignInSide = () => {
               name="username"
               autoComplete="username"
               autoFocus
+              error={!!error}
             />
             <TextField
               margin="normal"
@@ -173,6 +190,7 @@ const SignInSide = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              error={!!error}
             />
             <Button
               type="submit"

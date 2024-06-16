@@ -1,5 +1,5 @@
 import "./Landing.css";
-import { Grid, Slider } from "@mui/material";
+import { Grid } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AdvancedMarker, APIProvider, Map } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ import { getPendingLocations } from "../../api/getPendingLocations.ts";
 import { useNavigate } from "react-router-dom";
 import { getKnownLocations } from "../../api/getKnownLocations.ts";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Box from "@mui/material/Box";
 
 type Coordinates = {
   lat: number;
@@ -39,10 +40,7 @@ const Landing = () => {
     navigate("/");
   };
 
-  const handleUpdateFrequency = (
-    _event: Event,
-    value: number | number[],
-  ) => {
+  const handleUpdateFrequency = (_event: Event, value: number | number[]) => {
     setUpdateFrequency(value as number);
   };
 
@@ -61,14 +59,22 @@ const Landing = () => {
 
   const controlContent = (
     <>
-      <div>
-        Update Frequency
-        <Slider
-          color="success"
-          value={updateFrequency}
-          onChange={handleUpdateFrequency}
-        />
-      </div>
+      <Box
+        sx={{ display: "flex", flexDirection: "column" }}
+      >
+        <Box
+          sx={{ display: "flex", flexDirection: "row", marginBottom: "1rem" }}
+        >
+          <b>Name: </b>
+          <div>{localStorage.getItem("username")}</div>
+        </Box>
+        <Box
+          sx={{ display: "flex", flexDirection: "row", marginBottom: "1rem" }}
+        >
+          <b>Email: </b>
+          <div>{localStorage.getItem("email")}</div>
+        </Box>
+      </Box>
       <Button
         variant="outlined"
         color="success"
@@ -103,9 +109,9 @@ const Landing = () => {
       navigator.geolocation.getCurrentPosition((data) => {
         setPosition({ lat: data.coords.latitude, lng: data.coords.longitude });
       });
-    }, updateFrequency);
+    }, updateFrequency * 50);
     return () => clearInterval(interval);
-  }, []);
+  }, [updateFrequency]);
 
   useEffect(() => {
     getPendingLocations(headersHook.userData.username).then((data) =>
@@ -140,7 +146,11 @@ const Landing = () => {
               children={controlContent}
             />
           ) : (
-            <Settings handleClose={handleSettingsButton} />
+            <Settings
+              handleClose={handleSettingsButton}
+              updateFrequency={updateFrequency}
+              handleUpdateFrequency={handleUpdateFrequency}
+            />
           )}
         </Grid>
 
@@ -151,7 +161,9 @@ const Landing = () => {
               zoom={zoom}
               onZoomChanged={(data) => setZoom(data.detail.zoom)}
               fullscreenControl={false}
-              disableDefaultUI={true}
+              gestureHandling="greedy"
+              streetViewControl={false}
+              zoomControl={false}
               defaultCenter={position}
             >
               <AdvancedMarker
