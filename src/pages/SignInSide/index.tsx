@@ -15,8 +15,7 @@ import { useHooksContext } from "../../hooks/useHooksContext.tsx";
 
 const SignInSide = () => {
   const navigate = useNavigate(),
-    imageGenerator: string =
-      "url(/sign.jpg)",
+    imageGenerator: string = "url(/sign.jpg)",
     { headersHook } = useHooksContext(),
     [error, setError] = useState<string | null>(null),
     [signUp, setSignUp] = useState<boolean>(false);
@@ -102,7 +101,7 @@ const SignInSide = () => {
       container
       component="main"
       sx={{
-        height: "100vh",
+        height: "100dvh",
         backgroundImage: imageGenerator,
         backgroundRepeat: "no-repeat",
         backgroundColor: "rgba(49,52,46,0.5)",
