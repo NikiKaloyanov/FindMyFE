@@ -81,9 +81,7 @@ const Settings = (props: Props) => {
             onChange={props.handleUpdateFrequency}
           />
           <div>
-            {props.updateFrequency * 50 > 6000
-              ? 5000
-              : props.updateFrequency * 50}
+            {props.updateFrequency * 50}
           </div>
         </div>
       </Box>

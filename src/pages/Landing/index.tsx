@@ -31,7 +31,7 @@ const Landing = () => {
       lat: 42.697732,
       lng: 23.321906,
     }),
-    [updateFrequency, setUpdateFrequency] = useState<number>(5000),
+    [updateFrequency, setUpdateFrequency] = useState<number>(100),
     [openSettings, setOpenSettings] = useState<boolean>(false),
     [openAdd, setOpenAdd] = useState<boolean>(false);
 
