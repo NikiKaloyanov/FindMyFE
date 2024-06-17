@@ -1,5 +1,5 @@
 import "./Landing.css";
-import { Grid } from "@mui/material";
+import { Badge, Grid } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AdvancedMarker, APIProvider, Map } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ const Landing = () => {
   };
 
   const handleUpdateFrequency = (_event: Event, value: number | number[]) => {
-    setUpdateFrequency(value as number);
+    (value as number) > 9 ? setUpdateFrequency(value as number) : null;
   };
 
   const handleSettingsButton = () => {
@@ -59,20 +59,22 @@ const Landing = () => {
 
   const controlContent = (
     <>
-      <Box
-        sx={{ display: "flex", flexDirection: "column" }}
-      >
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Box
           sx={{ display: "flex", flexDirection: "row", marginBottom: "1rem" }}
         >
           <b>Name: </b>
-          <div>{localStorage.getItem("username")}</div>
+          <Box sx={{ paddingLeft: "0.5rem" }}>
+            {localStorage.getItem("username")}
+          </Box>
         </Box>
         <Box
           sx={{ display: "flex", flexDirection: "row", marginBottom: "1rem" }}
         >
           <b>Email: </b>
-          <div>{localStorage.getItem("email")}</div>
+          <Box sx={{ paddingLeft: "0.8rem" }}>
+            {localStorage.getItem("email")}
+          </Box>
         </Box>
       </Box>
       <Button
@@ -98,7 +100,9 @@ const Landing = () => {
           className="settings-button"
           onClick={handleSettingsButton}
         >
-          <SettingsIcon className="settings" />
+          <Badge badgeContent={userDataHook.pendingLocations.length}>
+            <SettingsIcon className="settings" />
+          </Badge>
         </Button>
       </div>
     </>
@@ -180,9 +184,11 @@ const Landing = () => {
                 <AdvancedMarker
                   key={it.username}
                   position={{ lat: it.latitude, lng: it.longitude }}
+                  onClick={() => {}}
                   children={
                     <MarkerImage
                       initials={userDataHook.getInitials(it.username)}
+                      message={it.message}
                     />
                   }
                 />

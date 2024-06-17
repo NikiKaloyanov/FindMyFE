@@ -5,7 +5,10 @@
   backdrop-filter: blur(5px) saturate(150%);
   -webkit-backdrop-filter: blur(5px) saturate(150%);
   background-color: rgba(182, 179, 146, 0.8);
-
   border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 50%;
+}
+
+.marker-with-message {
+  border: 2px solid rgba(200, 245, 145, 0.8) !important;
 }
