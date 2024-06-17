@@ -118,7 +118,7 @@ const Settings = (props: Props) => {
         {userDataHook.knownLocations.length > 0 ? (
           <>
             <b>Added People</b>
-            {closerThan50.length > 0 ? (
+            {closerThan50.length > 0 && (
               <>
                 <p>People closer than 50km</p>
                 {closerThan50.map((it) => (
@@ -143,7 +143,8 @@ const Settings = (props: Props) => {
                   </div>
                 ))}
               </>
-            ) : (
+            )}
+            {furtherThan50.length > 0 && (
               <>
                 <p>People further than 50km</p>
                 {furtherThan50.map((it) => (
