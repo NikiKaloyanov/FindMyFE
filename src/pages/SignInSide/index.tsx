@@ -30,8 +30,9 @@ const SignInSide = () => {
     const name = data.get("username") as string;
     const email = data.get("email") as string;
     const password = data.get("password") as string;
+    const confirmPassword = data.get("confirmPassword") as string;
     if (signUp) {
-      registerRequest(name, email, password);
+      registerRequest(name, email, password, confirmPassword);
     } else {
       loginRequest(name, password);
     }
@@ -65,6 +66,7 @@ const SignInSide = () => {
     name: string | null,
     email: string | null,
     password: string | null,
+    confirmPassword: string | null,
   ) => {
     setError(null);
 
@@ -88,6 +90,11 @@ const SignInSide = () => {
     if (!(email.includes("@") && email.includes("."))) {
       setError("Password should be at least 6 symbols");
       throw new Error("Password should be at least 6 symbols");
+    }
+
+    if (confirmPassword !== password) {
+      setError("Passwords do not match");
+      throw new Error("Passwords do not match");
     }
 
     setError(null);
@@ -191,6 +198,21 @@ const SignInSide = () => {
               autoComplete="current-password"
               error={!!error}
             />
+            {signUp && (
+              <>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  error={!!error}
+                  type="password"
+                  id="confirmPassword"
+                  label="Confirm Password"
+                  name="confirmPassword"
+                />
+                {error && <p>{error}</p>}
+              </>
+            )}
             <Button
               type="submit"
               fullWidth
