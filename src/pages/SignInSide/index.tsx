@@ -174,6 +174,7 @@ const SignInSide = () => {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                error={!!error}
               />
             )}
             <TextField
