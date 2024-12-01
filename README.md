@@ -10,3 +10,6 @@
    VITE_API_GOOGLE_MAPS_ID= ID от Google Cloud Platform: Google Maps API
    VITE_API_APPWRITE_PROJECT_ID= ID от Appwrite
 3. Стартирайте приложението чрез npm run dev / bun run dev
+
+Приложението осъществява комуникацията между фронтенд проекта и базата, доставяйки данни между проектите, записвайки
+данни за клиенти и управляването на токени и защита на проекта.
