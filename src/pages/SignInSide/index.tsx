@@ -12,6 +12,8 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../api/register.ts";
 import { useHooksContext } from "../../hooks/useHooksContext.tsx";
+import { account } from "../../appwrite.ts";
+import { OAuthProvider } from "appwrite";
 
 const SignInSide = () => {
   const navigate = useNavigate(),
@@ -101,6 +103,15 @@ const SignInSide = () => {
     register(name, email, password)
       .then(() => switchSignUp())
       .catch((err) => setError(err));
+  };
+
+  const googleSignIn = () => {
+    account
+      .createOAuth2Session(
+        OAuthProvider.Google,
+        "http://localhost:5173/redirect",
+        "http://localhost:5173/",
+      )
   };
 
   return (
@@ -231,6 +242,15 @@ const SignInSide = () => {
                 </Grid>
               </Grid>
             ) : null}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={googleSignIn}
+              sx={{ mt: 3, mb: 2, p: 2 }}
+            >
+              Login with Google
+            </Button>
           </Box>
         </Box>
       </Grid>
